@@ -10,6 +10,7 @@ import {
   deleteCardImages,
   getAllCardImages,
 } from '../lib/db/cardImagesStore';
+import { fetchImageFromUrl } from '../lib/urlImage';
 import type { CardImageRecord } from '../types';
 import type { LibraryEntry } from '../components/CardLibraryPanel/CardLibraryPanel';
 
@@ -75,6 +76,18 @@ export function useCardLibrary() {
     [toEntries],
   );
 
+  /** Fetches an image from a URL, persists it as a new card image, and refreshes the library. */
+  const addFromUrl = useCallback(
+    async (url: string) => {
+      const { blob, fileName } = await fetchImageFromUrl(url);
+      const record = await addCardImage(blob, fileName, 'url');
+      const all = await getAllCardImages();
+      setEntries(toEntries(all));
+      return record;
+    },
+    [toEntries],
+  );
+
   /** Deletes the given card images from IndexedDB and refreshes the library. */
   const removeImages = useCallback(
     async (ids: string[]) => {
@@ -85,5 +98,5 @@ export function useCardLibrary() {
     [toEntries],
   );
 
-  return { entries, isLoaded, addFiles, removeImages };
+  return { entries, isLoaded, addFiles, addFromUrl, removeImages };
 }

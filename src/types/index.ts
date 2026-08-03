@@ -4,8 +4,8 @@ import type { GridConfig } from '../lib/grid/gridConfig';
 import type { LengthUnit } from '../lib/units/units';
 
 /**
- * How a card image entered the library. `'url'` and `'api-cache'` are for
- * future phases (e.g. pulling card art from an API) — see PLAN.md.
+ * How a card image entered the library. `'api-cache'` is for a future phase
+ * (pulling card art directly from a TCG API) — see PLAN.md.
  */
 export type CardImageSourceType = 'upload' | 'url' | 'api-cache';
 

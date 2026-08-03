@@ -55,6 +55,7 @@ export function GridDisplay({ config, slotAssignments, imageUrlById }: GridDispl
                 <DroppableGridSlot
                   key={assignmentIndex}
                   slotIndex={assignmentIndex}
+                  cardId={cardId}
                   widthPx={pxLayout.cardWidthPx}
                   heightPx={pxLayout.cardHeightPx}
                   imageUrl={imageUrl}

@@ -88,6 +88,23 @@
 .card-library-panel__toolbar {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.url-import-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.url-import-form input {
+  min-width: 16rem;
+}
+
+.url-import-form__error {
+  color: #d33;
+  font-size: 0.85rem;
 }
 
 .card-library-panel__list {

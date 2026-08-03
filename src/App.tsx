@@ -18,7 +18,7 @@ import { normalizeSlotAssignments, type GridConfig } from './lib/grid/gridConfig
 
 function App() {
   const { state, isLoaded: isLayoutLoaded, update } = useLayoutState();
-  const { entries, isLoaded: isLibraryLoaded, addFiles, removeImages } = useCardLibrary();
+  const { entries, isLoaded: isLibraryLoaded, addFiles, addFromUrl, removeImages } = useCardLibrary();
 
   const imageUrlById = useMemo(() => {
     const map = new Map<string, string>();
@@ -53,6 +53,11 @@ function App() {
     update((prev) => ({ ...prev, libraryOrder: [...prev.libraryOrder, ...added.map((r) => r.id)] }));
   }
 
+  async function handleUrlAdded(url: string) {
+    const record = await addFromUrl(url);
+    update((prev) => ({ ...prev, libraryOrder: [...prev.libraryOrder, record.id] }));
+  }
+
   async function handleCleanUnused() {
     await removeImages(unusedImageIds);
   }
@@ -65,18 +70,33 @@ function App() {
     });
   }
 
+  function handleMoveOrSwap(fromSlotIndex: number, toSlotIndex: number) {
+    update((prev) => {
+      const slotAssignments = normalizeSlotAssignments(prev.gridConfig.layout, prev.slotAssignments);
+      const fromCardId = slotAssignments[fromSlotIndex];
+      if (!fromCardId) return prev;
+      const toCardId = slotAssignments[toSlotIndex];
+
+      slotAssignments[toSlotIndex] = fromCardId;
+      slotAssignments[fromSlotIndex] = toCardId;
+
+      return { ...prev, slotAssignments };
+    });
+  }
+
   if (!isLayoutLoaded || !isLibraryLoaded) {
     return <div className="app-loading">Loading…</div>;
   }
 
   return (
     <div className="app">
-      <DndProvider onAssign={handleAssign}>
+      <DndProvider onAssign={handleAssign} onMoveOrSwap={handleMoveOrSwap}>
         <GridConfigurator config={state.gridConfig} onChange={handleGridConfigChange} />
         <GridDisplay config={state.gridConfig} slotAssignments={state.slotAssignments} imageUrlById={imageUrlById} />
         <CardLibraryPanel
           entries={entries}
           onFilesAdded={handleFilesAdded}
+          onUrlAdded={handleUrlAdded}
           onCleanUnused={handleCleanUnused}
           hasUnusedImages={unusedImageIds.length > 0}
           renderItem={(entry) => (
