@@ -44,8 +44,17 @@
   gap: 0.25rem;
 }
 
+.app__main-row {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .grid-display {
   flex: 1;
+  min-width: 0;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -70,6 +79,34 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.waiting-area-panel {
+  flex: 0 0 220px;
+  border-left: 1px solid var(--border-color, #ccc);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 0.5rem;
+}
+
+.waiting-area-panel--drag-over {
+  background: rgba(100, 108, 255, 0.08);
+}
+
+.waiting-area-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.waiting-area-panel--empty {
+  color: #888;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem 0;
 }
 
 .card-library-panel {

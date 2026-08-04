@@ -33,6 +33,10 @@ export interface LayoutState {
   libraryOrder: string[];
   /** Card image id (or null if empty) per grid slot, indexed by flattened slot position. */
   slotAssignments: (string | null)[];
+  /** Card image ids held in the waiting-area side panel, in display order. */
+  waitingAreaOrder: string[];
+  /** Whether the waiting-area side panel is shown. */
+  waitingAreaEnabled: boolean;
   units: LengthUnit;
   updatedAt: number;
 }

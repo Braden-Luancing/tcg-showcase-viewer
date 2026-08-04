@@ -15,6 +15,8 @@ const DEFAULT_LAYOUT_STATE: LayoutState = {
   gridConfig: DEFAULT_GRID_CONFIG,
   libraryOrder: [],
   slotAssignments: [],
+  waitingAreaOrder: [],
+  waitingAreaEnabled: false,
   units: 'mm',
   updatedAt: 0,
 };
@@ -30,7 +32,13 @@ export function useLayoutState() {
     let cancelled = false;
     getLayoutState().then((loaded) => {
       if (cancelled) return;
-      if (loaded) setState(loaded);
+      if (loaded) {
+        setState({
+          ...loaded,
+          waitingAreaOrder: loaded.waitingAreaOrder ?? [],
+          waitingAreaEnabled: loaded.waitingAreaEnabled ?? false,
+        });
+      }
       setIsLoaded(true);
     });
     return () => {

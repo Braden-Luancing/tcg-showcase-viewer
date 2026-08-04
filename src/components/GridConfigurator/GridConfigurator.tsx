@@ -12,9 +12,16 @@ import { UnitsToggle } from './UnitsToggle';
 interface GridConfiguratorProps {
   config: GridConfig;
   onChange: (config: GridConfig) => void;
+  waitingAreaEnabled: boolean;
+  onWaitingAreaEnabledChange: (enabled: boolean) => void;
 }
 
-export function GridConfigurator({ config, onChange }: GridConfiguratorProps) {
+export function GridConfigurator({
+  config,
+  onChange,
+  waitingAreaEnabled,
+  onWaitingAreaEnabledChange,
+}: GridConfiguratorProps) {
   const unit = config.displayUnit;
 
   function setUnit(displayUnit: LengthUnit) {
@@ -77,6 +84,14 @@ export function GridConfigurator({ config, onChange }: GridConfiguratorProps) {
           </select>
         </label>
         <UnitsToggle unit={unit} onChange={setUnit} />
+        <label>
+          <input
+            type="checkbox"
+            checked={waitingAreaEnabled}
+            onChange={(e) => onWaitingAreaEnabledChange(e.target.checked)}
+          />
+          Waiting area
+        </label>
       </div>
 
       {config.layout.mode === 'uniform' ? (
