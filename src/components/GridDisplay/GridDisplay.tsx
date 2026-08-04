@@ -11,14 +11,16 @@ import { getRowCounts } from '../../lib/grid/gridConfig';
 import { computeGridPxLayout, getNaturalWidthMm } from '../../lib/grid/gridLayout';
 import { useMmToPx } from '../../hooks/useMmToPx';
 import { DroppableGridSlot } from '../dnd/DroppableGridSlot';
+import { ResizeHandle } from './ResizeHandle';
 
 interface GridDisplayProps {
   config: GridConfig;
   slotAssignments: (string | null)[];
   imageUrlById: Map<string, string>;
+  onConfigChange: (config: GridConfig) => void;
 }
 
-export function GridDisplay({ config, slotAssignments, imageUrlById }: GridDisplayProps) {
+export function GridDisplay({ config, slotAssignments, imageUrlById, onConfigChange }: GridDisplayProps) {
   const cardSize = getCardSizeById(config.cardSizeId);
   const naturalWidthMm = getNaturalWidthMm(config, cardSize);
   const { containerRef, scale } = useMmToPx(naturalWidthMm);
@@ -65,6 +67,15 @@ export function GridDisplay({ config, slotAssignments, imageUrlById }: GridDispl
           </div>
         );
       })}
+      {config.layout.mode === 'uniform' && (
+        <ResizeHandle
+          layout={config.layout}
+          cardWidthPx={pxLayout.cardWidthPx}
+          cardHeightPx={pxLayout.cardHeightPx}
+          gapPx={pxLayout.rows[0]?.columnGapPx ?? 0}
+          onResize={(layout) => onConfigChange({ ...config, layout })}
+        />
+      )}
     </div>
   );
 }

@@ -165,7 +165,12 @@ function App() {
           onWaitingAreaEnabledChange={handleWaitingAreaEnabledChange}
         />
         <div className="app__main-row">
-          <GridDisplay config={state.gridConfig} slotAssignments={state.slotAssignments} imageUrlById={imageUrlById} />
+          <GridDisplay
+            config={state.gridConfig}
+            slotAssignments={state.slotAssignments}
+            imageUrlById={imageUrlById}
+            onConfigChange={handleGridConfigChange}
+          />
           {state.waitingAreaEnabled && (
             <WaitingAreaPanel
               cardIds={state.waitingAreaOrder}
